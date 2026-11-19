@@ -103,16 +103,37 @@ function decide(ua, touchMac) {
 // DECIDE-END
 
 (function () {
-  var d = decide(navigator.userAgent, navigator.maxTouchPoints > 1);
+  var ua = navigator.userAgent;
+  var d = decide(ua, navigator.maxTouchPoints > 1);
   if (d.mode === "normal") { location.replace(d.url); return; }
   document.body.className += " inapp";
+
+  // Kaçış denemeleri sırayla; hiçbiri uygulamadan çıkarmazsa Steam sayfası olduğu yerde açılır (kimse bu sayfada takılı kalmaz).
+  // 2026-11-19: iPhone'daki Instagram x-safari-https bağlantısını sessizce yok sayıyordu; düğme hiçbir şey yapmıyordu.
+  var attempts = [];
+  if (d.mode === "inapp-ios" && /Instagram/i.test(ua))
+    attempts.push("instagram://extbrowser/?url=" + encodeURIComponent(STEAM_URL));
+  if (d.url !== STEAM_URL) attempts.push(d.url);
+  attempts.push(STEAM_URL);
+
+  var running = false;
+  function go() {
+    if (running) return;
+    running = true;
+    var i = 0;
+    (function next() {
+      if (document.hidden) { running = false; return; }   // uygulamadan çıkıldı: kaçış tuttu
+      var url = attempts[i++];
+      try { window.location.href = url; } catch (e) {}
+      if (i < attempts.length) setTimeout(next, 450);
+      else running = false;
+    })();
+  }
+
   var btn = document.getElementById("open");
-  btn.href = d.url;
-  btn.addEventListener("click", function (e) {
-    e.preventDefault();
-    window.location.href = d.url;
-  });
-  setTimeout(function () { window.location.href = d.url; }, 50);
+  btn.href = STEAM_URL;                                   // betik çalışmasa da düğme Steam'e gider
+  btn.addEventListener("click", function (e) { e.preventDefault(); go(); });
+  setTimeout(go, 80);
 })();
 </script>
 </body>
