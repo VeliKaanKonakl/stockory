@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Stockory: E-Commerce Simulator — Steam'de istek listene ekle</title>
+<meta name="description" content="Kendi e-ticaret işini garajdan kur, büyüt: Stockory'yi Steam'de istek listene ekle!">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Stockory: E-Commerce Simulator — Steam'de istek listene ekle">
+<meta property="og:description" content="Kendi e-ticaret işini garajdan kur, büyüt: Stockory'yi Steam'de istek listene ekle!">
+<meta property="og:url" content="https://velikaankonakl.github.io/stockory/">
+<meta property="og:image" content="https://velikaankonakl.github.io/stockory/header.jpg">
+<meta property="og:image:width" content="920">
+<meta property="og:image:height" content="430">
+<meta property="og:image:alt" content="Stockory: E-Commerce Simulator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stockory: E-Commerce Simulator — Steam'de istek listene ekle">
+<meta name="twitter:description" content="Kendi e-ticaret işini garajdan kur, büyüt: Stockory'yi Steam'de istek listene ekle!">
+<meta name="twitter:image" content="https://velikaankonakl.github.io/stockory/header.jpg">
+<noscript><meta http-equiv="refresh" content="0; url=https://store.steampowered.com/app/5569070/Stockory_ECommerce_Simulator/"></noscript>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: #1b2838 linear-gradient(180deg, #171a21 0%, #1b2838 55%, #2a475e 100%) fixed;
+    color: #c7d5e0;
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex; justify-content: center;
+  }
+  main { width: 100%; max-width: 480px; padding: 24px 16px 40px; text-align: center; }
+  img { width: 100%; height: auto; border-radius: 6px; display: block; box-shadow: 0 6px 24px rgba(0,0,0,.5); }
+  h1 { color: #fff; font-size: 1.35rem; margin: 20px 0 4px; }
+  p.sub { margin: 0 0 24px; color: #8f98a0; }
+  .btn {
+    display: block; width: 100%; min-height: 60px; padding: 16px; border: 0; border-radius: 6px;
+    background: linear-gradient(90deg, #75b022 5%, #588a1b 95%); color: #fff;
+    font-size: 1.25rem; font-weight: 700; text-decoration: none; cursor: pointer;
+  }
+  .btn:active { filter: brightness(1.15); }
+  a.plain { display: inline-block; margin-top: 18px; padding: 12px 8px; color: #66c0f4; word-break: break-all; }
+  .hint { margin-top: 24px; padding: 14px; border-radius: 6px; background: rgba(0,0,0,.25); font-size: .95rem; text-align: left; }
+  .hint .en { color: #8f98a0; margin-top: 6px; }
+  .inapp-only { display: none; }
+  body.inapp .inapp-only { display: block; }
+</style>
+</head>
+<body>
+<main>
+  <img src="header.jpg" width="920" height="430" alt="Stockory: E-Commerce Simulator">
+  <h1>Stockory: E-Commerce Simulator</h1>
+  <p class="sub">Steam'de istek listene ekle! · Add it to your Steam wishlist!</p>
+
+  <a class="btn" id="open" href="https://store.steampowered.com/app/5569070/Stockory_ECommerce_Simulator/">Steam'de aç</a>
+  <a class="plain" href="https://store.steampowered.com/app/5569070/Stockory_ECommerce_Simulator/">store.steampowered.com/app/5569070</a>
+
+  <div class="hint inapp-only">
+    <div>Açılmadıysa: sağ üstteki ⋯ menüsünden 'Tarayıcıda aç' / 'Open in browser' seçeneğine dokun.</div>
+    <div class="en">If it didn't open: tap the ⋯ menu at the top right and choose 'Open in browser'.</div>
+  </div>
+</main>
+<script>
+// DECIDE-BEGIN
+var STEAM_HOST_PATH = "store.steampowered.com/app/5569070/Stockory_ECommerce_Simulator/";
+var STEAM_URL = "https://" + STEAM_HOST_PATH;
+
+// In-app browsers to escape from. Add new entries here.
+var IN_APP_PATTERNS = [
+  /Instagram/i,
+  /FBAN|FBAV|FB_IAB|FBIOS|FB4A/i,       // Facebook
+  /Messenger|MessengerForiOS|Orca-Android/i,
+  /musical_ly|Bytedance|TikTok/i,       // TikTok
+  /\bLine\//i,                          // LINE
+  /Snapchat/i
+];
+
+function isInApp(ua) {
+  for (var i = 0; i < IN_APP_PATTERNS.length; i++) {
+    if (IN_APP_PATTERNS[i].test(ua)) return true;
+  }
+  return false;
+}
+
+// touchMac: iPadOS reports a Macintosh UA; pass true when the device has touch.
+function decide(ua, touchMac) {
+  ua = ua || "";
+  if (!isInApp(ua)) return { mode: "normal", url: STEAM_URL };
+  var ios = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && !!touchMac);
+  if (ios) return { mode: "inapp-ios", url: "x-safari-" + STEAM_URL };
+  if (/Android/i.test(ua)) {
+    return {
+      mode: "inapp-android",
+      url: "intent://" + STEAM_HOST_PATH + "#Intent;scheme=https;S.browser_fallback_url=" +
+           encodeURIComponent(STEAM_URL) + ";end"
+    };
+  }
+  return { mode: "inapp-other", url: STEAM_URL };
+}
+// DECIDE-END
+
+(function () {
+  var d = decide(navigator.userAgent, navigator.maxTouchPoints > 1);
+  if (d.mode === "normal") { location.replace(d.url); return; }
+  document.body.className += " inapp";
+  var btn = document.getElementById("open");
+  btn.href = d.url;
+  btn.addEventListener("click", function (e) {
+    e.preventDefault();
+    window.location.href = d.url;
+  });
+  setTimeout(function () { window.location.href = d.url; }, 50);
+})();
+</script>
+</body>
+</html>
